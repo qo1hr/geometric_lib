@@ -7,6 +7,18 @@ funcs = ['perimeter', 'area']
 sizes = {}
 
 def calc(fig, func, size):
+	'''
+	// Функция вычисляет значение заданной фигуры
+	input:  название фигуры "circle" или "square"
+			название функции "perimeter" или "area"
+			размер фигуры: для радиуса окружности на вход дается одна величина - r(радиус), для квадрата также одна величина - a(сторона)
+	output: функция возвращает результат вычисляния той или иной фигура с тем или иным действием и размером
+				//Пример работы:
+				input: calc("square", "perimeter", 3)
+				output: 12
+				input: calc("circle", "area", 3)
+				output: 28,27433
+	'''
 	assert fig in figs
 	assert func in funcs
 
