@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "ФИО: $FULL_NAME"
           echo "Группа: $GROUP_NUMBER"
-          echo "Github Nickname: $GITHUB_ACTOR"
+          echo "GitHub Nickname: $GITHUB_ACTOR"
 
       - name: Set up Python 3.13
         uses: actions/setup-python@v4
@@ -41,4 +41,4 @@ jobs:
       - name: Check code style
         run: |
           pip install flake8 autopep8
-          flake8 . || (echo "Code style issues found. Attempting to auto-fix..." && autopep8 --in-place --aggressive --aggressive .)
+          flake8 . || (echo "Code style issues found. Attempting to auto-fix..." && autopep8 -r --in-place --aggressive --aggressive .)
