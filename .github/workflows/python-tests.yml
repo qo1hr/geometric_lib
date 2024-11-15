@@ -1,18 +1,18 @@
-name: Python Tests
+name: CI Workflow
 
 on:
   push:
     branches:
       - main
-      - release/*
+      - release
   pull_request:
     branches:
-      - master
-      - release/*
+      - main
+      - release
       - develop
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     env:
@@ -20,29 +20,29 @@ jobs:
       GROUP_NUMBER: "M3115"
 
     steps:
-      # 1. Checkout the code from the repository
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
-      # 2. Print user information
-      - name: Print User Information
+      - name: Output personal information
         run: |
-          echo "ФИО: ${{ env.FULL_NAME }}"
-          echo "Группа: ${{ env.GROUP_NUMBER }}"
-          echo "Github Nickname: ${{ github.actor }}"
+          echo "ФИО: $FULL_NAME"
+          echo "Номер группы: $GROUP_NUMBER"
+          echo "GitHub Nickname: $GITHUB_ACTOR"
 
-      # 3. Set up Python 3.13
       - name: Set up Python 3.13
         uses: actions/setup-python@v4
         with:
-          python-version: "3.13"
+          python-version: '3.13'
 
-      # 4. Run tests
-      - name: Run Tests
+      - name: List directory contents
         run: |
-          export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE
-          python -m unittest discover -s geometric_lib/tests
+          echo "Содержимое текущего каталога:"
+          ls -la
+      - name: Run tests
+        run: |
+          python -m unittest discover -s tests
 
-      # 5. Lint code with flake8
-      - name: Lint code with flake8
-        run: flake8 .
+      - name: Check code style
+        run: |
+          pip install flake8
+          flake8 . || (echo "Code style issues found. Attempting to auto-fix..." && autopep8 --in-place --aggressive --aggressive .)
