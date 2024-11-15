@@ -20,19 +20,29 @@ jobs:
       GROUP_NUMBER: "M3115"
 
     steps:
+      # 1. Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Print user information
       - name: Print User Information
         run: |
           echo "ФИО: ${{ env.FULL_NAME }}"
           echo "Группа: ${{ env.GROUP_NUMBER }}"
           echo "Github Nickname: ${{ github.actor }}"
 
+      # 3. Set up Python 3.13
       - name: Set up Python 3.13
         uses: actions/setup-python@v4
         with:
           python-version: "3.13"
 
+      # 4. Run tests
       - name: Run Tests
-        run: python -m unittest discover -s geometric_lib/tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE
+          python -m unittest discover -s geometric_lib/tests
 
+      # 5. Lint code with flake8
       - name: Lint code with flake8
         run: flake8 .
