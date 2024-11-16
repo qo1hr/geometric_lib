@@ -1,0 +1,44 @@
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+      - release
+  pull_request:
+    branches:
+      - main
+      - release
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      FULL_NAME: "Фролов Игорь Дмитриевич"
+      GROUP_NUMBER: "M3115"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Output personal information
+        run: |
+          echo "ФИО: $FULL_NAME"
+          echo "Группа: $GROUP_NUMBER"
+          echo "GitHub Nickname: $GITHUB_ACTOR"
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      - name: Run tests
+        run: |
+          python -m unittest discover -s tests
+
+      - name: Check code style
+        run: |
+          pip install flake8 autopep8
+          flake8 . || (echo "Code style issues found. Attempting to auto-fix..." && autopep8 -r --in-place --aggressive --aggressive .)
